@@ -1,3 +1,39 @@
 h1{
   color: red;
 }
+
+html {
+  font-family: arial;
+}
+
+.listbg {
+  width:200px;
+  height:400px;
+  background-color: #FFCC00;
+  box-shadow: 5px 5px 5px 5px #CCCCCC;
+}
+
+.tickbox {
+  width: 40px;
+}
+
+.inputbox {
+  font-size: 20px;
+  color: #000066;
+  width: 70%;
+}
+
+.listtitle {
+  font-size: 40px;
+  color: #000066;
+  width: 100%;
+  text-align: center;
+}
+
+.listarea {
+  height: 70%;
+}
+
+.buttonsarea {
+  height: 10%;
+}
