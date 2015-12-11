@@ -15,7 +15,7 @@
 	</div>
 	<script type="text/jsx">
 
-
+		//not sure if note text should be stored here or in ToDoItem
 		var ToDoList = React.createClass ({
 			getInitialState: function() {
 				return ({numberItems: 1})
@@ -43,24 +43,32 @@
 
 		var ToDoItem = React.createClass ({
 
+			//tracking three states: ticked, editing and text
+
 			getInitialState: function() {
 				return ({ticked: false, editing: true, text: "Enter text"})
 			},
 
 			handleTick: function() {
+				//toggles state ticked
+				//always sets editing to false
 				this.setState({ticked: !this.state.ticked, editing: false})
 			},
 
 			edit: function () {
+				//changes editing to true
 				this.setState({editing: true})
 			},
 
 			save: function() {
+				//changes editing to false and save new text state
 				this.setState({editing: false, text: this.refs.itemText.value})
 			},
 
 			render: function() {
 
+				//button display logic
+				//essentially, there is only one button showing at a time for any combintation of states
 				var displayDelete;
 				if (this.state.ticked) {
 					displayDelete = "" }
@@ -92,9 +100,10 @@
 					displayText = "";
 				};
 
-
+				//debugging area
 				console.log(this.state.editing)
 
+				//item return consists of tickbox, input text and buttons for save, edit, delete
 				return (
 					<div>
 						<form role="form">
@@ -121,7 +130,7 @@
 
 		})
 
-
+		//calling render function
 		ReactDOM.render(<ToDoList/>,
 			document.getElementById('react-container'));
 

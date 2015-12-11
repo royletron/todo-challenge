@@ -1,14 +1,4 @@
-.list-bg {
-	background-color: #FFCC00;
-	width: 20em;
-	height: 30em;
-	list-style: none;
-	box-shadow: 2px 2px 2px 2px #CCCCCC;
-}
-
-.listTitle {
-	font-family: 'Architects Daughter', cursive;
-}
+/*ToDoItem styles*/
 
 form * {
 	float: left;
@@ -41,10 +31,23 @@ form * {
 	top: -0.2em;
 }
 
+/*ToDoList styles*/
 .textDiv {
 	width: 12em;
 }
 
 .addButtonDiv {
 	padding-top: 2em;
+}
+
+.list-bg {
+	background-color: #FFCC00;
+	width: 20em;
+	height: 30em;
+	list-style: none;
+	box-shadow: 2px 2px 2px 2px #CCCCCC;
+}
+
+.listTitle {
+	font-family: 'Architects Daughter', cursive;
 }
