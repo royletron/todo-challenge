@@ -29,12 +29,14 @@
 			render: function() {
 				return (
 					<div className="list-bg">
-						<div id="list" ref="list">
+						<div id="listDiv" ref="list">
 							<h1 className="listTitle">To do list</h1>
-							<ToDoItem/>
+							<ul className="toDoItemList">
+								<li><ToDoItem/></li>
+							</ul>
 						</div>
-						<div className="addButtonDiv">
-							<button type="button" onClick={this.add} className="btn btn-primary glyphicon glyphicon-plus"/>
+						<div id="addButtonDiv">
+							<button type="button" onClick={this.add} className="addButton btn btn-primary glyphicon glyphicon-plus"/>
 						</div>
 					</div>
 					);
@@ -114,14 +116,16 @@
 								<input type="input" ref="itemText" defaultValue={this.state.text} className="todo-input" style={{display: displayInput}}/>
 								<p className="todo-text" style={{display: displayText}}>{this.state.text}</p>
 							</div>
-							<div>
-								<button type="button" onClick={this.save} className="btn btn-success glyphicon glyphicon-floppy-disk" style={{display: displaySave}}/>
-							</div>
-							<div>
-								<button type="button" onClick={this.edit} className="btn btn-primary glyphicon glyphicon-pencil" style={{display: displayEdit}}/>
-							</div>
-							<div>
-								<button type="button" onClick={this.del} className="btn btn-danger glyphicon glyphicon-trash" style={{display: displayDelete}}/>
+							<div id="functionButtonDiv">
+								<div>
+									<button type="button" onClick={this.save} className="btn btn-success glyphicon glyphicon-floppy-disk" style={{display: displaySave}}/>
+								</div>
+								<div>
+									<button type="button" onClick={this.edit} className="btn btn-primary glyphicon glyphicon-pencil" style={{display: displayEdit}}/>
+								</div>
+								<div>
+									<button type="button" onClick={this.del} className="btn btn-danger glyphicon glyphicon-trash" style={{display: displayDelete}}/>
+								</div>
 							</div>
 						</form>
 					</div>
