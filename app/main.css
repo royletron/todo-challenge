@@ -1,0 +1,50 @@
+.list-bg {
+	background-color: #FFCC00;
+	width: 20em;
+	height: 30em;
+	list-style: none;
+	box-shadow: 2px 2px 2px 2px #CCCCCC;
+}
+
+.listTitle {
+	font-family: 'Architects Daughter', cursive;
+}
+
+form * {
+	float: left;
+	padding-left: 0.4em;
+}
+
+.checkbox {
+	width: 30px;
+	height: 30px;
+}
+
+.todo-input {
+	width: auto;
+	padding: 0.2em;
+	height: 2.5em;
+}
+
+.todo-text {
+	font-family: 'Architects Daughter', cursive;
+	font-size: 1.2em;
+	width: auto;
+	padding: 0.2em;
+	padding-top: 0.5em;
+	height: 2.5em;
+}
+
+.itemtickbox {
+	width: 2.5em;
+	height: 2.5em;
+	top: -0.2em;
+}
+
+.textDiv {
+	width: 12em;
+}
+
+.addButtonDiv {
+	padding-top: 2em;
+}

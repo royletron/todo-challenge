@@ -1,10 +1,130 @@
+<!DOCTYPE html>
 <html>
-  <link rel="stylesheet" type="text/css" href="main.css">
-  <link href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/css/bootstrap.min.css" type="text/css">
-  <title>React-Babel-Webpack Boileplate</title>
-  <body>
-    <script type="text/javascript" src="bundle.js"></script>
+<head>
+	<title>React component</title>
+	<link href="./main.css" rel="stylesheet" type="text/css">
+	<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/css/bootstrap.min.css" integrity="sha384-1q8mTJOASx8j1Au+a5WDVnPi2lkFfwwEAa8hDDdjZlpLegxhjVME1fgjWPGmkzs7" crossorigin="anonymous"/>
+	<link href='https://fonts.googleapis.com/css?family=Architects+Daughter' rel='stylesheet' type='text/css'>
+	<script src="https://fb.me/react-0.13.3.min.js"></script>
+	<script src="https://fb.me/react-with-addons-0.14.3.min.js"></script>
+	<script src="https://fb.me/react-dom-0.14.3.min.js"></script>
+	<script src="https://fb.me/JSXTransformer-0.13.3.js"></script>
+</head>
+<body>
+	<div id="react-container">
+	</div>
+	<script type="text/jsx">
 
-    <div id="list"></div>
-  </body>
+
+		var ToDoList = React.createClass ({
+			getInitialState: function() {
+				return ({numberItems: 1})
+			},
+
+			add: function () {
+				this.setState({numberItems: this.state.numberItems+1})
+
+			},
+
+			render: function() {
+				return (
+					<div className="list-bg">
+						<div id="list" ref="list">
+							<h1 className="listTitle">To do list</h1>
+							<ToDoItem/>
+						</div>
+						<div className="addButtonDiv">
+							<button type="button" onClick={this.add} className="btn btn-primary glyphicon glyphicon-plus"/>
+						</div>
+					</div>
+					);
+			}
+		})
+
+		var ToDoItem = React.createClass ({
+
+			getInitialState: function() {
+				return ({ticked: false, editing: true, text: "Enter text"})
+			},
+
+			handleTick: function() {
+				this.setState({ticked: !this.state.ticked, editing: false})
+			},
+
+			edit: function () {
+				this.setState({editing: true})
+			},
+
+			save: function() {
+				this.setState({editing: false, text: this.refs.itemText.value})
+			},
+
+			render: function() {
+
+				var displayDelete;
+				if (this.state.ticked) {
+					displayDelete = "" }
+				else {
+					displayDelete = "none"
+				};
+
+				var displayEdit;
+				if (!this.state.ticked && !this.state.editing) {
+					displayEdit = "" }
+				else {
+					displayEdit = "none"
+				};
+
+				var displaySave;
+				if (!this.state.ticked && this.state.editing) {
+					displaySave = "" }
+				else {
+					displaySave = "none"
+				};
+
+				var displayInput;
+				var displayText;
+				if (this.state.editing) {
+					displayInput = "";
+					displayText = "none";}
+				else {
+					displayInput = "none";
+					displayText = "";
+				};
+
+
+				console.log(this.state.editing)
+
+				return (
+					<div>
+						<form role="form">
+							<div>
+								<input onClick={this.handleTick} className="checkbox itemtickbox" type="checkbox" />
+							</div>
+							<div className="textDiv">
+								<input type="input" ref="itemText" defaultValue={this.state.text} className="todo-input" style={{display: displayInput}}/>
+								<p className="todo-text" style={{display: displayText}}>{this.state.text}</p>
+							</div>
+							<div>
+								<button type="button" onClick={this.save} className="btn btn-success glyphicon glyphicon-floppy-disk" style={{display: displaySave}}/>
+							</div>
+							<div>
+								<button type="button" onClick={this.edit} className="btn btn-primary glyphicon glyphicon-pencil" style={{display: displayEdit}}/>
+							</div>
+							<div>
+								<button type="button" onClick={this.del} className="btn btn-danger glyphicon glyphicon-trash" style={{display: displayDelete}}/>
+							</div>
+						</form>
+					</div>
+				);
+			}
+
+		})
+
+
+		ReactDOM.render(<ToDoList/>,
+			document.getElementById('react-container'));
+
+	</script>
+</body>
 </html>
