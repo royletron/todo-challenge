@@ -81,4 +81,14 @@ form * {
 .toDoItemList {
 	list-style: none;
 	padding-left: 0;
+	width: 100%;
+	display: block;
 }
+
+.toDoItemList li {
+	float: left;
+	height: 3em;
+}
+
+
+
