@@ -17,25 +17,49 @@
 
 		//not sure if note text should be stored here or in ToDoItem
 		var ToDoList = React.createClass ({
+			propTypes: {
+				count: function(props, propName) {
+					if (props[propName] > 7) {
+						return new Error('Finish your todo list before adding more.')
+					}
+				}
+			},
+
 			getInitialState: function() {
-				return ({numberItems: 1})
+				return ({itemIDs: [0], nextID: 1})
 			},
 
 			add: function () {
-				this.setState({numberItems: this.state.numberItems+1})
+				var itemIDs = this.state.itemIDs;
+				if (itemIDs.length < 7) {
+					itemIDs.push(this.state.nextID);
+					this.setState({itemIDs: itemIDs})
+					this.incrementID();
+				}
+			},
 
+			remove: function(id) {
+				var itemIDs = this.state.itemIDs;
+				var i = this.props.id;
+				//itemIDs.splice(i, 1);
+			},
+
+			incrementID: function() {
+				this.setState({nextID: this.state.nextID+1})
 			},
 
 			render: function() {
+				var item = []
+				for (var i of this.state.itemIDs) {
+					   item.push(<li><ToDoItem ref={i}/></li>)
+				}
+
 				return (
 					<div className="list-bg">
 						<div id="listDiv" ref="list">
 							<h1 className="listTitle">To do list</h1>
 							<ul className="toDoItemList">
-								<li><ToDoItem/></li>
-								<li><ToDoItem/></li>
-								<li><ToDoItem/></li>
-								<li><ToDoItem/></li>
+								{item}
 							</ul>
 						</div>
 						<div id="addButtonDiv">
@@ -105,9 +129,6 @@
 					displayText = "";
 				};
 
-				//debugging area
-				console.log(this.state.editing)
-
 				//item return consists of tickbox, input text and buttons for save, edit, delete
 				return (
 					<div>
@@ -127,7 +148,7 @@
 									<button type="button" onClick={this.edit} className="btn btn-primary glyphicon glyphicon-pencil" style={{display: displayEdit}}/>
 								</div>
 								<div>
-									<button type="button" onClick={this.del} className="btn btn-danger glyphicon glyphicon-trash" style={{display: displayDelete}}/>
+									<button type="button" onClick={this.remove} className="btn btn-danger glyphicon glyphicon-trash" style={{display: "none"}}/>
 								</div>
 							</div>
 						</form>
