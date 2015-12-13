@@ -18,45 +18,62 @@
 		//not sure if note text should be stored here or in ToDoItem
 		var ToDoList = React.createClass ({
 			getInitialState: function() {
-				return ({notes: ["Enter item"]})
+				//sets the currentID to 0 and sets up the object that holds the items by id
+				return ({currentID: 0, notes: {0: {text: "Enter item"} } })
 			},
 
 			update: function(newText, i) {
+				//when the save button is pressed, this function is triggers
+				//sets state for any text changes to a particular item
 				var items = this.state.notes;
-				items[i] = newText;
+				items[i].text = newText;
 				this.setState({notes:items});
 			},
 
 			add: function () {
+				//when a new item is adding, this increments the id and add a new item to the object
+				//prevent user from adding more than 7 items
 				var items = this.state.notes;
-				if (items.length < 7) {
-					items.push("Enter item");
+				var keys = Object.keys(items);
+
+				if (keys.length < 7) {
+					var nextID = this.state.currentID+1;
+					this.setState( {currentID: nextID});
+					items[nextID] = {};
+					items[nextID].text = "Enter item";
 					this.setState({notes: items});
 				} else {
 					alert("Finish an item before adding another.")
 				};
 			},
+
 			remove: function(i) {
+				//remove an item by id
 				var items = this.state.notes;
-				items.splice(i, 1);
+				delete items[i];
 				this.setState({notes: items});
 			},
 
 			eachItem: function(value, i) {
+				//returns what should be rendered for each item in the object
+				//ToDoItem is a component 
+				//passes two methods, update and remove, to the children
 				return (<li>
-							<ToDoItem key={i} 
-								index={i}
-								onChange={this.update}
+							<ToDoItem
+								index={i} 
+								onTextChange={this.update}
 								onRemove={this.remove}>
 								{value}
 							</ToDoItem></li>);
 			},
 
 			render: function() {
+				//renders all of the items in the list
 				var items = [];
-				for (var i=0; i < this.state.notes.length; i++) {
-					var value = this.state.notes[i];
-					items.push(this.eachItem(value, i));
+				var keys = Object.keys(this.state.notes);
+				for (var i=0; i < keys.length; i++) {
+					var value = this.state.notes[keys[i]].text;
+					items.push(this.eachItem(value, keys[i]));
 				}
 
 				return (
@@ -64,7 +81,7 @@
 						<div id="listDiv" ref="list">
 							<h1 className="listTitle">To do list</h1>
 							<ul className="toDoItemList">
-								{this.state.notes.map(this.eachItem)}
+								{items}
 							</ul>
 						</div>
 						<div id="addButtonDiv">
@@ -77,9 +94,8 @@
 
 		var ToDoItem = React.createClass ({
 
-			//tracking three states: ticked, editing
-
 			getInitialState: function() {
+				//tracking two states: ticked, editing
 				return ({ticked: false, editing: true})
 			},
 
@@ -96,11 +112,13 @@
 
 			save: function() {
 				//changes editing to false
+				//the onTextChange method is inherited from parent ToDoList
 				this.setState({editing: false});
-				this.props.onChange(this.refs.itemText.getDOMNode().value, this.props.index);
+				this.props.onTextChange(this.refs.itemText.getDOMNode().value, this.props.index);
 			},
 
 			remove: function() {
+				//the onRemove method is inherited from parent ToDoList
 				this.props.onRemove(this.props.index);
 			},
 
@@ -144,7 +162,7 @@
 					<div>
 						<form role="form">
 							<div>
-								<input onClick={this.handleTick} className="checkbox itemtickbox" type="checkbox" />
+								<input onClick={this.handleTick} className="checkbox itemtickbox" type="checkbox"/>
 							</div>
 							<div className="textDiv">
 								<input type="input" ref="itemText" defaultValue={this.props.children} className="todo-input" style={{display: displayInput}}/>
