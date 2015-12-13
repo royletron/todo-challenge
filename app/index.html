@@ -17,41 +17,46 @@
 
 		//not sure if note text should be stored here or in ToDoItem
 		var ToDoList = React.createClass ({
-			propTypes: {
-				count: function(props, propName) {
-					if (props[propName] > 7) {
-						return new Error('Finish your todo list before adding more.')
-					}
-				}
+			getInitialState: function() {
+				return ({notes: ["Enter item"]})
 			},
 
-			getInitialState: function() {
-				return ({itemIDs: [0], nextID: 1})
+			update: function(newText, i) {
+				var items = this.state.notes;
+				items[i] = newText;
+				this.setState({notes:items});
 			},
 
 			add: function () {
-				var itemIDs = this.state.itemIDs;
-				if (itemIDs.length < 7) {
-					itemIDs.push(this.state.nextID);
-					this.setState({itemIDs: itemIDs})
-					this.incrementID();
-				}
+				var items = this.state.notes;
+				if (items.length < 7) {
+					items.push("Enter item");
+					this.setState({notes: items});
+				} else {
+					alert("Finish an item before adding another.")
+				};
+			},
+			remove: function(i) {
+				var items = this.state.notes;
+				items.splice(i, 1);
+				this.setState({notes: items});
 			},
 
-			remove: function(id) {
-				var itemIDs = this.state.itemIDs;
-				var i = this.props.id;
-				//itemIDs.splice(i, 1);
-			},
-
-			incrementID: function() {
-				this.setState({nextID: this.state.nextID+1})
+			eachItem: function(value, i) {
+				return (<li>
+							<ToDoItem key={i} 
+								index={i}
+								onChange={this.update}
+								onRemove={this.remove}>
+								{value}
+							</ToDoItem></li>);
 			},
 
 			render: function() {
-				var item = []
-				for (var i of this.state.itemIDs) {
-					   item.push(<li><ToDoItem ref={i}/></li>)
+				var items = [];
+				for (var i=0; i < this.state.notes.length; i++) {
+					var value = this.state.notes[i];
+					items.push(this.eachItem(value, i));
 				}
 
 				return (
@@ -59,7 +64,7 @@
 						<div id="listDiv" ref="list">
 							<h1 className="listTitle">To do list</h1>
 							<ul className="toDoItemList">
-								{item}
+								{this.state.notes.map(this.eachItem)}
 							</ul>
 						</div>
 						<div id="addButtonDiv">
@@ -72,10 +77,10 @@
 
 		var ToDoItem = React.createClass ({
 
-			//tracking three states: ticked, editing and text
+			//tracking three states: ticked, editing
 
 			getInitialState: function() {
-				return ({ticked: false, editing: true, text: "Enter text"})
+				return ({ticked: false, editing: true})
 			},
 
 			handleTick: function() {
@@ -90,8 +95,13 @@
 			},
 
 			save: function() {
-				//changes editing to false and save new text state
-				this.setState({editing: false, text: this.refs.itemText.value})
+				//changes editing to false
+				this.setState({editing: false});
+				this.props.onChange(this.refs.itemText.getDOMNode().value, this.props.index);
+			},
+
+			remove: function() {
+				this.props.onRemove(this.props.index);
 			},
 
 			render: function() {
@@ -137,8 +147,8 @@
 								<input onClick={this.handleTick} className="checkbox itemtickbox" type="checkbox" />
 							</div>
 							<div className="textDiv">
-								<input type="input" ref="itemText" defaultValue={this.state.text} className="todo-input" style={{display: displayInput}}/>
-								<p className="todo-text" style={{display: displayText}}>{this.state.text}</p>
+								<input type="input" ref="itemText" defaultValue={this.props.children} className="todo-input" style={{display: displayInput}}/>
+								<p className="todo-text" style={{display: displayText}}>{this.props.children}</p>
 							</div>
 							<div id="functionButtonDiv">
 								<div>
@@ -148,7 +158,7 @@
 									<button type="button" onClick={this.edit} className="btn btn-primary glyphicon glyphicon-pencil" style={{display: displayEdit}}/>
 								</div>
 								<div>
-									<button type="button" onClick={this.remove} className="btn btn-danger glyphicon glyphicon-trash" style={{display: "none"}}/>
+									<button type="button" onClick={this.remove} className="btn btn-danger glyphicon glyphicon-trash" style={{display: displayDelete}}/>
 								</div>
 							</div>
 						</form>
