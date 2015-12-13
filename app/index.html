@@ -19,15 +19,23 @@
 		var ToDoList = React.createClass ({
 			getInitialState: function() {
 				//sets the currentID to 0 and sets up the object that holds the items by id
-				return ({currentID: 0, notes: {0: {text: "Enter item"} } })
+				return ({currentID: 0, notes: {0: {text: "Enter item", tickedState: false, editingState: true} } });
 			},
 
 			update: function(newText, i) {
-				//when the save button is pressed, this function is triggers
+				//when the save button is pressed, this function is triggered
 				//sets state for any text changes to a particular item
 				var items = this.state.notes;
 				items[i].text = newText;
+				items[i].tickedState = false;
+				items[i].editingState = false;
 				this.setState({notes:items});
+			},
+
+			changeText: function(i, text) {
+				var items = this.state.notes;
+				items[i].text = text;
+				this.setState({notes: items})
 			},
 
 			add: function () {
@@ -41,10 +49,30 @@
 					this.setState( {currentID: nextID});
 					items[nextID] = {};
 					items[nextID].text = "Enter item";
+					items[nextID].tickedState = false;
+					items[nextID].editingState = true;
 					this.setState({notes: items});
 				} else {
 					alert("Finish an item before adding another.")
 				};
+			},
+
+			handleTick: function(i) {
+				//toggles state ticked
+				//always sets editing to false
+				//this.setState({ticked: !this.state.ticked, editing: false})
+				var items = this.state.notes;
+				items[i].tickedState = !items[i].tickedState;
+				items[i].editingState = false;
+				this.setState({notes: items});
+			},
+
+			edit: function(i, text) {
+				//triggers when the edit button is pressed
+				var items = this.state.notes;
+				items[i].text = text;
+				items[i].editingState = true;
+				this.setState({notes: items});
 			},
 
 			remove: function(i) {
@@ -54,16 +82,21 @@
 				this.setState({notes: items});
 			},
 
-			eachItem: function(value, i) {
+			eachItem: function(i) {
 				//returns what should be rendered for each item in the object
 				//ToDoItem is a component 
 				//passes two methods, update and remove, to the children
 				return (<li>
 							<ToDoItem
 								index={i} 
-								onTextChange={this.update}
-								onRemove={this.remove}>
-								{value}
+								onSave={this.update}
+								onTextChange = {this.changeText}
+								onRemove={this.remove}
+								onTickChange={this.handleTick}
+								onEditClick={this.edit}
+								tickedState={this.state.notes[i].tickedState}
+								editingState={this.state.notes[i].editingState}
+								text={this.state.notes[i].text}>
 							</ToDoItem></li>);
 			},
 
@@ -72,8 +105,7 @@
 				var items = [];
 				var keys = Object.keys(this.state.notes);
 				for (var i=0; i < keys.length; i++) {
-					var value = this.state.notes[keys[i]].text;
-					items.push(this.eachItem(value, keys[i]));
+					items.push(this.eachItem(keys[i]));
 				}
 
 				return (
@@ -94,27 +126,24 @@
 
 		var ToDoItem = React.createClass ({
 
-			getInitialState: function() {
-				//tracking two states: ticked, editing
-				return ({ticked: false, editing: true})
-			},
-
-			handleTick: function() {
-				//toggles state ticked
-				//always sets editing to false
-				this.setState({ticked: !this.state.ticked, editing: false})
+			tick: function() {
+				this.props.onTickChange(this.props.index);
 			},
 
 			edit: function () {
 				//changes editing to true
-				this.setState({editing: true})
+				this.refs.inputText.getDOMNode().value = this.props.text;
+				this.props.onEditClick(this.props.index, this.refs.itemText.getDOMNode().innerHTML);
 			},
 
 			save: function() {
 				//changes editing to false
-				//the onTextChange method is inherited from parent ToDoList
-				this.setState({editing: false});
-				this.props.onTextChange(this.refs.itemText.getDOMNode().value, this.props.index);
+				//the onSave method is inherited from parent ToDoList
+				this.props.onSave(this.refs.inputText.getDOMNode().value, this.props.index);
+			},
+
+			textChange: function(event) {
+				this.props.onTextChange(this.props.index, event.target.value);
 			},
 
 			remove: function() {
@@ -124,24 +153,25 @@
 
 			render: function() {
 
+
 				//button display logic
 				//essentially, there is only one button showing at a time for any combintation of states
 				var displayDelete;
-				if (this.state.ticked) {
+				if (this.props.tickedState) {
 					displayDelete = "" }
 				else {
 					displayDelete = "none"
 				};
 
 				var displayEdit;
-				if (!this.state.ticked && !this.state.editing) {
+				if (!this.props.tickedState && !this.props.editingState) {
 					displayEdit = "" }
 				else {
 					displayEdit = "none"
 				};
 
 				var displaySave;
-				if (!this.state.ticked && this.state.editing) {
+				if (!this.props.tickedState && this.props.editingState) {
 					displaySave = "" }
 				else {
 					displaySave = "none"
@@ -149,7 +179,7 @@
 
 				var displayInput;
 				var displayText;
-				if (this.state.editing) {
+				if (this.props.editingState) {
 					displayInput = "";
 					displayText = "none";}
 				else {
@@ -162,11 +192,11 @@
 					<div>
 						<form role="form">
 							<div>
-								<input onClick={this.handleTick} className="checkbox itemtickbox" type="checkbox"/>
+								<input onClick={this.tick} className="checkbox itemtickbox" type="checkbox" checked={this.props.tickedState}/>
 							</div>
 							<div className="textDiv">
-								<input type="input" ref="itemText" defaultValue={this.props.children} className="todo-input" style={{display: displayInput}}/>
-								<p className="todo-text" style={{display: displayText}}>{this.props.children}</p>
+								<input onChange={this.textChange} value={this.props.text} type="input" ref="inputText" className="todo-input" style={{display: displayInput}}/>
+								<p className="todo-text" ref="itemText" style={{display: displayText}}>{this.props.text}</p>
 							</div>
 							<div id="functionButtonDiv">
 								<div>
