@@ -1,3 +1,7 @@
 h1{
-  color: red;
+  color: darkred;
+}
+.app-main{
+  background-color: darkgrey;
+  padding: 15px;
 }
