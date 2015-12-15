@@ -1,12 +1,12 @@
 var React = require('react');
 var Reflux = require('reflux');
-var Actions = Reflux.createActions(["addTask", "deleteTask"]);
+var Actions = Reflux.createActions(["addTask", "removeTask"]);
 
 Actions.addTask.listen(function(){
   console.log('Adding task');
 })
 
-Actions.deleteTask.listen(function(){
+Actions.removeTask.listen(function(){
   console.log('Deleting task');
 })
 

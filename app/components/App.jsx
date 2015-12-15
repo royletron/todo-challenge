@@ -20,9 +20,9 @@ module.exports = React.createClass({
         continue
       }
 
-      var text = this.state.tasks[task].text;
-      if (text != null)
-        rows.push(<ListItem task={text}/>);
+      //var text = this.state.tasks[task].text;
+      //if (text != null)
+      rows.push(<ListItem taskIndex={task} taskText={this.state.tasks[task].text}/>);
     }
 
     return (

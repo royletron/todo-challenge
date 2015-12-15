@@ -44,7 +44,11 @@ module.exports = Reflux.createStore({
     this.updateTasks(this.tasks);
   },
 
-  deleteTask: function(){
+  removeTask: function(taskIndex){
+    // _.filter();
+    console.log("remove", taskIndex)
+
+    this.tasks.splice(taskIndex, 1);
 
     this.updateTasks(this.tasks);
   },
