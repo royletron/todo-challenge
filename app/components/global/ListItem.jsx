@@ -11,8 +11,8 @@ var ListItem = module.exports = React.createClass({
   },
   render: function(){
     return(
-      <li onClick={this.onClick}>
-        <p>{this.props.task}</p>
+      <li onClick={this.onClick}>{this.props.task}
+        <input type='button' value='-' class='delete' field='deleteTask' />
       </li>
     );
   }

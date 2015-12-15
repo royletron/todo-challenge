@@ -1,7 +1,18 @@
-h1{
-  color: darkred;
+h1 {
+  color: black;
 }
-.app-main{
-  background-color: darkgrey;
+
+ul {
+  list-style-type: none;
+  margin: 0;
+  padding: 0;
+}
+
+.app-main {
+  background-color: lightgrey;
   padding: 15px;
+}
+
+.task-list {
+  width: 300px;
 }

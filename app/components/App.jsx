@@ -28,10 +28,10 @@ module.exports = React.createClass({
     return (
       <div className="app-main">
         <h1>Djao's JustDoIt's</h1>
-        <ul>
+        <AddButton />
+        <ul className="task-list">
             {rows}
         </ul>
-        <AddButton />
       </div>
     );
   }

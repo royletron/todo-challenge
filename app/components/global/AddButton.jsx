@@ -1,7 +1,7 @@
 var React = require('react');
 var Actions = require('../../actions/Actions.jsx');
 
-//require('./AddButton.css');
+require('./AddButton.css');
 
 var AddButton = module.exports = React.createClass({
   onClick: function(event){
@@ -17,7 +17,7 @@ var AddButton = module.exports = React.createClass({
 
   _handleKeyPress: function(event) {
     if (event.key === 'Enter') {
-      console.log('do validate');
+      console.log('todo: validation');
       Actions.addTask(event.target.value);
       event.target.value = "";
       //this.replaceState(this.getInitialState());
@@ -34,6 +34,6 @@ var AddButton = module.exports = React.createClass({
   render: function () {
     console.log("input component value", this.value);
 
-    return <input ref="addtask" type="text" onKeyPress={this._handleKeyPress} onChange={this._handleChange}/>;
+    return <input className="add-button" ref="addtask" type="text" onKeyPress={this._handleKeyPress} onChange={this._handleChange}/>;
   }
 });
