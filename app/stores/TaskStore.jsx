@@ -3,37 +3,11 @@ var Reflux = require('reflux');
 //var StateMixin = require('reflux-state-mixin');
 var Actions = require('../actions/Actions.jsx');
 
-function getTasksFromLocalStorage() {
-   var localStorageTasks = [];
-
-   if (localStorage.tasks != undefined) {
-     localStorageTasks = JSON.parse(localStorage.tasks);
-   }
-
-   console.log("Local storage tasks", localStorageTasks);
-
-   var rows = [];
-   for (var task in localStorageTasks) {
-     if (localStorageTasks[task] == null ) {
-       console.log("null task is null")
-       localStorageTasks.splice(task, 1);
-     }
-   }
-
-   return localStorageTasks
- };
-
- function saveToLocalStorage(tasks) {
-   console.log("Saving to localStorage :");
-   localStorage.tasks = JSON.stringify(tasks);
-   console.log(localStorage.tasks);
- }
-
 module.exports = Reflux.createStore({
 //  mixins: [StateMixin.store],
   listenables: Actions,
 
-  tasks : getTasksFromLocalStorage(),
+  tasks : initializeTasks(),
   // tasks: [
   //   {
   //     id: "task1",
@@ -64,19 +38,48 @@ module.exports = Reflux.createStore({
 
     console.log('Action: addtask');
 
-    console.log("this.tasks", this.tasks);
-
     var counter = this.tasks.length + 1;
     this.tasks.push({id: "task" + counter, text:taskname});
-    this.trigger(this.tasks);
 
-    saveToLocalStorage(this.tasks);
+    this.updateTasks(this.tasks);
   },
 
   deleteTask: function(){
-    console.log('Store says decrement');
-    this.counter--;
-    this.trigger(this.counter);
+    this.updateTasks(this.tasks);
+  },
+
+  updateTasks: function(tasks){
+    console.log("Updating Tasks");
+    localStorage.tasks = JSON.stringify(tasks);
+    console.log("Saved to localStorage :", localStorage.tasks);
+
+    this.tasks = tasks;
+    this.trigger(tasks);
   }
 
 });
+
+function initializeTasks() {
+  console.log("Initializing tasks");
+  return getTasksFromLocalStorage();
+}
+
+function getTasksFromLocalStorage() {
+   var localStorageTasks = [];
+
+   if (localStorage.tasks != undefined) {
+     localStorageTasks = JSON.parse(localStorage.tasks);
+   }
+
+   console.log("Local storage tasks", localStorageTasks);
+
+   var rows = [];
+   for (var task in localStorageTasks) {
+     if (localStorageTasks[task] == null ) {
+       console.log("null task is null")
+       localStorageTasks.splice(task, 1);
+     }
+   }
+
+   return localStorageTasks
+ }

@@ -1,6 +1,5 @@
 var React = require('react');
 var Reflux = require('reflux');
-
 var Actions = Reflux.createActions(["addTask", "deleteTask"]);
 
 Actions.addTask.listen(function(){
