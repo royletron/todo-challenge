@@ -4,19 +4,23 @@ var Reflux = require('reflux');
 var Actions = require('../actions/Actions.jsx');
 
 function getTasksFromLocalStorage() {
-   var initialTasks = JSON.parse(localStorage.tasks);
+   var localStorageTasks = [];
 
-   console.log("initialTasks", initialTasks);
+   if (localStorage.tasks != undefined) {
+     localStorageTasks = JSON.parse(localStorage.tasks);
+   }
+
+   console.log("Local storage tasks", localStorageTasks);
 
    var rows = [];
-   for (var task in initialTasks) {
-     if (initialTasks[task] == null ) {
+   for (var task in localStorageTasks) {
+     if (localStorageTasks[task] == null ) {
        console.log("null task is null")
-       initialTasks.splice(task, 1);
+       localStorageTasks.splice(task, 1);
      }
    }
 
-   return initialTasks
+   return localStorageTasks
  };
 
  function saveToLocalStorage(tasks) {
