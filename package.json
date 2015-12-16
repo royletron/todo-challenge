@@ -43,10 +43,5 @@
     "boilerplate"
   ],
   "author": "Darren Royle",
-  "license": "MIT",
-  "pre-commit": [
-    "lint",
-    "validate",
-    "test"
-  ]
+  "license": "MIT"
 }

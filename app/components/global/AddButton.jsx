@@ -11,17 +11,23 @@ var AddButton = module.exports = React.createClass({
       console.log('You have not sent an onClick prop')
   },
 
-  _handleChange: function(event){
-    this.value = event.target.value;
-  },
+  // _handleChange: function(event){
+  //   this.value = event.target.value;
+  // },
+  //
+  // _handleKeyPress: function(event) {
+  //   if (event.key === 'Enter') {
+  //     console.log('todo: validation');
+  //     Actions.addTask(event.target.value);
+  //     event.target.value = "";
+  //     //this.replaceState(this.getInitialState());
+  //   }
+  // },
 
-  _handleKeyPress: function(event) {
-    if (event.key === 'Enter') {
-      console.log('todo: validation');
-      Actions.addTask(event.target.value);
-      event.target.value = "";
-      //this.replaceState(this.getInitialState());
-    }
+  onSubmit: function(event) {
+    event.preventDefault();
+    Actions.addTask(this.refs.addtask.value);
+    this.refs.addtask.value = "";
   },
 
   componentDidMount: function(event) {
@@ -34,6 +40,11 @@ var AddButton = module.exports = React.createClass({
   render: function () {
     console.log("input component value", this.value);
 
-    return <input className="add-button" ref="addtask" type="text" onKeyPress={this._handleKeyPress} onChange={this._handleChange}/>;
+    return (
+      <form onSubmit={this.onSubmit}>
+        <input className="add-button" ref="addtask" type="text" />
+        <input type="submit" value="Add item" />
+      </form>
+    )
   }
 });

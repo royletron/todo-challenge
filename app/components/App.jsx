@@ -14,6 +14,7 @@ module.exports = React.createClass({
     console.log(this.state.tasks);
 
     var rows = [];
+    var count = 0;
     for (var task in this.state.tasks) {
       if (this.state.tasks[task] == null ) {
         console.log("Warning: null task")
@@ -22,7 +23,8 @@ module.exports = React.createClass({
 
       //var text = this.state.tasks[task].text;
       //if (text != null)
-      rows.push(<ListItem taskIndex={task} taskText={this.state.tasks[task].text}/>);
+      rows.push(<ListItem key={count} taskIndex={task} taskText={this.state.tasks[task].text}/>);
+      count++;
     }
 
     return (
