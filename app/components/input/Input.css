@@ -1,0 +1,12 @@
+.input-main input[type="text"] {
+  padding: 10px;
+  border: solid 5px #c9c9c9;
+}
+.input-main-focus input[type="text"].focus {
+  border: solid 5px #969696;
+}
+.input-main input[type="submit"] {
+  padding: 10px;
+  background-color: tomato;
+  border: solid 5px Red;
+}
