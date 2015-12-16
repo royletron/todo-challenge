@@ -3,32 +3,41 @@ var Reflux = require('reflux');
 var StateMixin = require('reflux-state-mixin');
 var Actions = require('../actions/TodoActions.jsx');
 
+var data = {
+  lists: [{ id: 0, name: "Test List", counter: 0, todos: [{id: -1, todo: "Get todos working", checked: true}]}],
+  current: 0,
+  counter: 1,
+  currentList: function() {
+    return this.lists.find(function(list){
+      return list.id === data.current;
+    });
+  }
+};
+
 module.exports = Reflux.createStore({
   listenables: Actions,
-  counter: 0,
-  todos: [{id: -1, todo: "Get todos working", checked: true}],
   getInitialState: function() {
-    return this.todos
+    return data;
   },
   onToggleCheck: function(id){
-    this.todos.forEach(function(todo){
+    data.currentList().todos.forEach(function(todo){
       if(todo.id == id)
         todo.checked = !todo.checked;
     });
-    this.trigger(this.todos);
+    this.trigger(data);
   },
   onAdd: function(todo){
-    this.todos.push({id: this.counter, todo: todo, checked: false});
+    data.currentList().todos.push({id: this.counter, todo: todo, checked: false});
     this.counter++;
-    this.trigger(this.todos);
+    this.trigger(data);
   },
   onRemove: function(id){
     var tmp = []
-    this.todos.forEach(function(todo){
+    data.currentList().todos.forEach(function(todo){
       if(todo.id != id)
         tmp.push(todo);
     })
-    this.todos = tmp;
-    this.trigger(this.todos);
+    data.currentList().todos = tmp;
+    this.trigger(data);
   }
-})
+});

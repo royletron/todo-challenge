@@ -43,18 +43,20 @@ var Todo = React.createClass({
 })
 
 module.exports = React.createClass({
-  mixins: [Reflux.connect(Store,"todos")],
+  mixins: [Reflux.connect(Store)],
   render: function() {
     var list = [];
-
-    this.state.todos.forEach(function(todo){
+    this.state.currentList().todos.forEach(function(todo){
       list.push(<Todo key={todo.id} data={todo} />);
     })
 
     return (
-      <ul className="media-list">
-        {list}
-      </ul>
+      <div>
+        <h2>{this.state.currentList().name}</h2>
+        <ul className="media-list">
+          {list}
+        </ul>
+      </div>
     );
   }
 })
