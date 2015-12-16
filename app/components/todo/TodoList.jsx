@@ -11,13 +11,27 @@ var CheckBox = React.createClass({
   render: function() {
     if(this.props.checked)
       return(
-        <span onClick={this.onClick} style={{"fontSize": "50px", "color": "#2ECC40"}} className="glyphicon glyphicon-ok-sign" />
+        <i onClick={this.onClick} className="fa fa-check-circle" style={{"color": "#2ECC40"}}></i>
       )
     return(
-      <span onClick={this.onClick} style={{"fontSize": "50px", "color": "#FF4136"}} className="glyphicon glyphicon-remove-sign" />
+      <i onClick={this.onClick} className="fa fa-circle" style={{"color": "#FF4136"}}></i>
     )
   }
 })
+
+
+/*
+<li className="card" key={this.props.data.id}>
+  <div className="media-left">
+    <CheckBox id={this.props.data.id} checked={this.props.data.checked} />
+  </div>
+  <div className="media-body">
+    <h4 className="media-heading" style={style}>{this.props.data.todo}</h4>
+    <a className="btn btn-sm btn-danger" onClick={this.onDeleteClick}>
+      <span className="glyphicon glyphicon-trash"></span>
+    </a>
+  </div>
+</li> */
 
 var Todo = React.createClass({
   onDeleteClick: function() {
@@ -28,17 +42,14 @@ var Todo = React.createClass({
     if(this.props.data.checked)
       style["textDecoration"] = "line-through";
     return (
-      <li className="media well well-sm" key={this.props.data.id}>
-        <div className="media-left">
-          <CheckBox id={this.props.data.id} checked={this.props.data.checked} />
+      <div className="card card-block">
+        <h4 className="card-title">
+        <CheckBox id={this.props.data.id} checked={this.props.data.checked} /> {this.props.data.todo}</h4>
+        <div className="btn-group btn-group">
+          <button type="button" className="btn btn-danger"><i className="fa fa-trash"></i></button>
+          <button type="button" className="btn btn-primary"><i className="fa fa-pencil"></i></button>
         </div>
-        <div className="media-body">
-          <h4 className="media-heading" style={style}>{this.props.data.todo}</h4>
-          <a className="btn btn-sm btn-danger" onClick={this.onDeleteClick}>
-            <span className="glyphicon glyphicon-trash"></span>
-          </a>
-        </div>
-      </li>
+      </div>
     );
   }
 })
@@ -58,9 +69,7 @@ module.exports = React.createClass({
       <div>
         <h2>{this.state.currentList.name}</h2>
         <AddThing placeholder={"What do you want to add to "+this.state.currentList.name.toLowerCase()+"?"} onAdd={this.onAdd} button="Add it!" />
-        <ul className="media-list">
-          {list}
-        </ul>
+        {list}
       </div>
     );
   }

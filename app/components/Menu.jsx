@@ -10,7 +10,7 @@ var Item = React.createClass({
   },
   render: function() {
     return (
-      <li className={this.props.active ? 'active': ''}><a onClick={this.onClick} style={{"textAlign": "left"}}>{this.props.item.name}</a></li>
+      <li className="nav-item"><a onClick={this.onClick} style={{"textAlign": "left"}}  className={this.props.active ? 'nav-link active': 'nav-link'}>{this.props.item.name} </a></li>
     );
   }
 })
