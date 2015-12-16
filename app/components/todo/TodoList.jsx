@@ -2,6 +2,7 @@ var React = require('react');
 var Reflux = require('reflux');
 var Actions = require('../../actions/TodoActions.jsx');
 var Store = require('../../stores/TodoStore.jsx');
+var AddThing = require('./AddThing.jsx');
 
 var CheckBox = React.createClass({
   onClick: function(event){
@@ -44,15 +45,19 @@ var Todo = React.createClass({
 
 module.exports = React.createClass({
   mixins: [Reflux.connect(Store)],
+  onAdd: function(item) {
+    Actions.add(item);
+  },
   render: function() {
     var list = [];
-    this.state.currentList().todos.forEach(function(todo){
+    this.state.currentList.todos.forEach(function(todo){
       list.push(<Todo key={todo.id} data={todo} />);
     })
 
     return (
       <div>
-        <h2>{this.state.currentList().name}</h2>
+        <h2>{this.state.currentList.name}</h2>
+        <AddThing placeholder={"What do you want to add to "+this.state.currentList.name.toLowerCase()+"?"} onAdd={this.onAdd} button="Add it!" />
         <ul className="media-list">
           {list}
         </ul>

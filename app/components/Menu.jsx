@@ -2,18 +2,24 @@ var React = require('react');
 var Store = require('../stores/TodoStore.jsx');
 var Actions = require('../actions/TodoActions.jsx');
 var Reflux = require('reflux');
+var AddThing = require('./todo/AddThing.jsx');
 
 var Item = React.createClass({
+  onClick: function() {
+    Actions.setList(this.props.item.id);
+  },
   render: function() {
-    console.log(this.props);
     return (
-      <li className={this.props.active ? 'active': ''}><a style={{"textAlign": "left"}}>{this.props.item.name}</a></li>
+      <li className={this.props.active ? 'active': ''}><a onClick={this.onClick} style={{"textAlign": "left"}}>{this.props.item.name}</a></li>
     );
   }
 })
 
 module.exports = React.createClass({
   mixins: [Reflux.connect(Store)],
+  onAdd: function(name) {
+    Actions.addList(name);
+  },
   render: function() {
     var items = [];
     if(this.state.lists != undefined){
@@ -22,9 +28,12 @@ module.exports = React.createClass({
       }.bind(this))
     }
     return (
-      <ul className="nav nav-pills nav-justified" style={{"marginTop": "15px"}}>
-        {items}
-      </ul>
+      <div style={{'paddingTop': '15px'}}>
+        <AddThing onAdd={this.onAdd} placeholder='Add list' button='Add' />
+        <ul className="nav nav-pills nav-stacked" style={{"marginTop": "15px"}}>
+          {items}
+        </ul>
+      </div>
     );
   }
 })
