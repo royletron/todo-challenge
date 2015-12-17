@@ -1,3 +1,5 @@
-h1{
-  color: red;
+body {
+  font-family: monospace, sans-serif, serif;
+  background: Black;
+  color: #00CC00;
 }
