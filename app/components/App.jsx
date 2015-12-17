@@ -14,13 +14,21 @@ var ConsoleLine = React.createClass({
 });
 
 var Console = React.createClass({
-  mixins: [Reflux.connect(Store, "command")],
+  mixins: [
+    Reflux.connect(Store, "command")
+  ],
   render: function() {
+    var previousLines = [];
+    console.log(this.state);
+    for(var i = 0; i < this.state.command.previous.length; i ++) {
+      previousLines[i] = <ConsoleLine key={i}>{this.state.command.previous[i]}</ConsoleLine>
+    }
     return (
       <div>
         <ConsoleLine>*** PROCRASTI_MATE ***</ConsoleLine>
         <ConsoleLine>Console-based task management system</ConsoleLine>
-        <ConsoleLine>{this.state.command}_</ConsoleLine>
+        {previousLines}
+        <ConsoleLine>{this.state.command.current}_</ConsoleLine>
       </div>
     );
   }
