@@ -1,4 +1,6 @@
 var React = require('react');
+var Reflux = require('reflux');
+var Store = require('../stores/MyStore.jsx');
 
 require('./App.css');
 
