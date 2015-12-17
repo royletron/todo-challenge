@@ -5,5 +5,17 @@ var Actions = require('../actions/MyActions.jsx');
 
 module.exports = Reflux.createStore({
   mixins: [StateMixin.store],
-  listenables: Actions
+  listenables: Actions,
+  command: "",
+  getInitialState: function() {
+    return this.command;
+  },
+  onNewCharacter: function(newCharacter) {
+    this.command += newCharacter;
+    this.trigger(this.command);
+  },
+  onSubmit: function() {
+    this.command = "";
+    this.trigger(this.command);
+  }
 });
