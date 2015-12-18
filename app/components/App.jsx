@@ -20,13 +20,20 @@ var Console = React.createClass({
   render: function() {
     var previousLines = [];
     console.log(this.state);
+    var k = 0;
     for(var i = 0; i < this.state.command.previous.length; i ++) {
-      previousLines[i] = <ConsoleLine key={i}>{this.state.command.previous[i]}</ConsoleLine>
+      for(var j = 0; j < this.state.command.previous[i].length; j ++) {
+        previousLines.push(<ConsoleLine key={k}>{this.state.command.previous[i][j]}</ConsoleLine>);
+        k ++;
+      }
     }
     return (
       <div>
         <ConsoleLine>*** PROCRASTI_MATE ***</ConsoleLine>
         <ConsoleLine>Console-based task management system</ConsoleLine>
+        <ConsoleLine>Use "list" to see current tasks</ConsoleLine>
+        <ConsoleLine>Use "add [task description]" to add a new task</ConsoleLine>
+        <ConsoleLine><br/></ConsoleLine>
         {previousLines}
         <ConsoleLine>{this.state.command.current}_</ConsoleLine>
       </div>
