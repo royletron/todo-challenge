@@ -17,13 +17,16 @@ module.exports = Reflux.createStore({
 		this.trigger(this.contents);
 		console.log(this.contents);
 	},
+	speak: function() {
+		console.log('hello');
+	},
 	onAddTask: function(name, desc) {
 		console.log(name);
 		console.log(desc);
 		this.contents[this.i] = (
 			<div key={this.i}>
 				<br/>
-				<div className="task">
+				<div onClick={this.speak} className="task" id={this.i}>
 					<h1>{name}</h1>
 					<h2>{desc}</h2>
 					<button value={this.i} onClick={this.removeTask}>Done!</button>
