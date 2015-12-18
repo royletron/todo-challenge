@@ -22,9 +22,14 @@ module.exports = Reflux.createStore({
 		console.log(desc);
 		this.contents[this.i] = (
 			<div key={this.i}>
-				<h1>{name}</h1>
-				<h2>{desc}</h2>
-				<button value={this.i} onClick={this.removeTask}>Done!</button>
+				<br/>
+				<div className="task">
+					<h1>{name}</h1>
+					<h2>{desc}</h2>
+					<button value={this.i} onClick={this.removeTask}>Done!</button>
+					<br/>
+					<br/>
+				</div>
 			</div>
 		);
 		this.i++;

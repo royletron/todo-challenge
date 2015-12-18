@@ -9,7 +9,7 @@ module.exports = React.createClass({
 		return (
 			<div>
 				<Adder/>
-				<div>{this.state.contents}</div>
+				<div className="inner cover">{this.state.contents}</div>
 			</div>
 		);
 	}
