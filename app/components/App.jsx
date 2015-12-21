@@ -51,10 +51,24 @@ module.exports = React.createClass({
   }
 });
 
+var actx = new (window.AudioContext || window.webkitAudioContext)();
+var gain = actx.createGain();
+gain.gain.value = 0.1;
+gain.connect(actx.destination);
+
 document.addEventListener("keypress", function(ev) {
+  var osc = actx.createOscillator();
+  osc.type = 'square';
+  osc.connect(gain);
   if(ev.which == 13) {
+    osc.frequency.value = 440;
+    osc.start();
+    osc.stop(actx.currentTime + 0.3);
     Actions.submit();
   } else {
+    osc.frequency.value = 330;
+    osc.start();
+    osc.stop(actx.currentTime + 0.05);
     var character = String.fromCharCode(ev.which);
     Actions.newCharacter(character);
   }
